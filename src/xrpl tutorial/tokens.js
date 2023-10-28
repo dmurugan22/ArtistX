@@ -83,9 +83,9 @@ async function main() {
         "TransactionType": "Payment",
         "Account": cold_wallet.address,
         "Amount": {
-        "currency": currency_code,
-        "value": issue_quantity,
-        "issuer": cold_wallet.address
+            "currency": currency_code,
+            "value": issue_quantity,
+            "issuer": cold_wallet.address
         },
         "Destination": hot_wallet.address,
         "DestinationTag": 1 // Needed since we enabled Require Destination Tags
