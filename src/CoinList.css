@@ -1,0 +1,14 @@
+.stock-item {
+  margin-bottom: 20px;
+}
+
+.stock-border {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.stock-border:hover {
+  border-color: #007bff; /* Change border color on hover */
+}
