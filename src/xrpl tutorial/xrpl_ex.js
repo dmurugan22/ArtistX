@@ -8,12 +8,12 @@ console.log(wallet.address) // this is the derived public key
 // Wrap code in an async function so we can use await
 async function main() {
 
-    // Define the network client
-    const client = new xrpl.Client("wss://s.altnet.rippletest.net:51233")
-    await client.connect()
-  
-    // Prepare transaction -------------------------------------------------------
-    const prepared = await client.autofill({
+  // Define the network client
+  const client = new xrpl.Client("wss://s.altnet.rippletest.net:51233")
+  await client.connect()
+
+  // Prepare transaction -------------------------------------------------------
+  const prepared = await client.autofill({
     "TransactionType": "Payment",
     "Account": "rwUovZSYAD6DtgAmMR3VxC8TtZAcHrJPLm",
     "Amount": xrpl.xrpToDrops("10"),

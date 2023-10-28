@@ -28,9 +28,10 @@ async function main() {
     client.on("ledgerClosed", async (ledger) => {
         console.log(`Ledger #${ledger.ledger_index} validated with ${ledger.txn_count} transactions!`)
     })
+    
   
     // Disconnect when done (If you omit this, Node.js won't end the process)
     await client.disconnect()
-  }
-  
-  main()
+}
+
+main()
