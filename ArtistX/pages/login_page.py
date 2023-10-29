@@ -8,7 +8,7 @@ import reflex as rx
 
 def login_page():
     return rx.vstack(
-        rx.heading("Login to CoinTrade", font_size="2em", color="blue"),
+        rx.heading("Login to ArtistX", font_size="2em", color="blue"),
         rx.text("Username:"),
         rx.input(),  # Add more attributes as needed
         rx.text("Password:"),
