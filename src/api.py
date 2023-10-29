@@ -131,7 +131,7 @@ async def customer_transaction_buy(wallet, currency, amount, cost):
     client = xrpl.clients.JsonRpcClient(testnet_url)
     cold_wallet = generate_faucet_wallet(client, debug=True)
     hot_wallet = generate_faucet_wallet(client, debug=True)
-    seq = 0
+    seq = [0]
     def submit_transaction(tx, wallet):
         response = xrpl.transaction.submit_and_wait(tx, client, wallet)
         seq[0] = response.result['LastLedgerSequence']
