@@ -48,7 +48,6 @@ class State(rx.State):
             self.wallet[crypto['name']] = self.wallet[crypto['name']] + int(self.amt)/self.prices[crypto['name']]
             self.prices[crypto['name']] = self.prices[crypto['name']] + int(self.amt)/(self.prices[crypto['name']] * self.total_coins[crypto['name']])
             print("executed!!")
-        loop.run_until_complete()
     async def sell_stock(self, crypto):
         print("hi")
         loop = asyncio.get_event_loop()
@@ -60,7 +59,6 @@ class State(rx.State):
             self.wallet[crypto['name']] = self.wallet[crypto['name']] - int(self.amt)/self.prices[crypto['name']]
             self.prices[crypto['name']] = self.prices[crypto['name']] - int(self.amt)/(self.prices[crypto['name']] * self.total_coins[crypto['name']])
             print("executed!!")
-        loop.run_until_complete()
     def set_searchevent(self, searchevent: str):
         self.artistSearched = None
         self.searchevent = searchevent

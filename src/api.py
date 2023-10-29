@@ -78,7 +78,7 @@ async def customer_transaction_sell(wallet, currency, amount, cost):
 
     if not submit_transaction(trust_set_tx, hot_wallet): 
         return False
-
+    return True
     issue_quantity = amount
     send_token_tx = xrpl.models.transactions.Payment(
         last_ledger_sequence=seq[0] + 1000,
@@ -198,6 +198,7 @@ async def customer_transaction_buy(wallet, currency, amount, cost):
             value="10000000000",
         )
     )
+    return True
 
     if not submit_transaction(trust_set_tx, wallet):
         return False
