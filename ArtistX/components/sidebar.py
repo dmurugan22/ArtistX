@@ -13,11 +13,6 @@ def sidebar_header() -> rx.Component:
         The sidebar header component.
     """
     return rx.hstack(
-        # The logo.
-        rx.image(
-            src="/icon.svg",
-            height="2em",
-        ),
         rx.spacer(),
         # Link to Reflex GitHub repo.
         rx.link(
@@ -129,7 +124,7 @@ def sidebar() -> rx.Component:
                         icon=page.get("image", "/github.svg"),
                         url=page["route"],
                     )
-                    for page in get_decorated_pages() if page['title'] != "Dashboard" and page['title'] != "Trading"
+                    for page in get_decorated_pages() if page['title'] != "Dashboard" and page['title'] != "Trading" and page['title'] != "Discover"
                 ],
                 width="100%",
                 overflow_y="auto",

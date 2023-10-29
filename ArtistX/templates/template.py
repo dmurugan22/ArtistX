@@ -43,7 +43,7 @@ def menu_button() -> rx.Component:
                             width="100%",
                         )
                     )
-                    for page in get_decorated_pages() if page['title'] != "Dashboard" and page['title'] != "Trading"
+                    for page in get_decorated_pages() if page['title'] != "Dashboard" and page['title'] != "Trading" and page['title'] != "Discover"
                 ],
                 rx.menu_divider(),
                 rx.menu_item(

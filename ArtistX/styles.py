@@ -16,7 +16,7 @@ sidebar_width = "20em"
 template_page_style = {"padding_top": "5em", "padding_x": ["auto", "2em"]}
 
 template_content_style = {
-    "width": "100%",
+    "width": 1050,
     "align_items": "flex-start",
     "box_shadow": box_shadow,
     "border_radius": border_radius,
