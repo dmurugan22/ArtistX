@@ -18,57 +18,7 @@
   // issuer's TickSize value (or the lesser of the two for token-token trades.)
   const proposed_quality = BigNumber(we_spend.value) / BigNumber(we_want.value)
 
-  // Look up Offers. -----------------------------------------------------------
-  // To buy TST, look up Offers where "TakerGets" is TST:
-  const orderbook_resp = await client.request({
-    "command": "book_offers",
-    "taker": wallet.address,
-    "ledger_index": "current",
-    "taker_gets": we_want,
-    "taker_pays": we_spend
-  })
-  console.log(JSON.stringify(orderbook_resp.result, null, 2))
 
-  // Estimate whether a proposed Offer would execute immediately, and...
-  // If so, how much of it? (Partial execution is possible)
-  // If not, how much liquidity is above it? (How deep in the order book would
-  //    other Offers have to go before ours would get taken?)
-  // Note: These estimates can be thrown off by rounding if the token issuer
-  // uses a TickSize setting other than the default (15). In that case, you
-  // can increase the TakerGets amount of your final Offer to compensate.
-
-  const offers = orderbook_resp.result.offers
-  const want_amt = BigNumber(we_want.value)
-  let running_total = BigNumber(0)
-  if (!offers) {
-    console.log(`No Offers in the matching book.
-                 Offer probably won't execute immediately.`)
-  } else {
-    for (const o of offers) {
-      if (o.quality <= proposed_quality) {
-        console.log(`Matching Offer found, funded with ${o.owner_funds}
-            ${we_want.currency}`)
-        running_total = running_total.plus(BigNumber(o.owner_funds))
-        if (running_total >= want_amt) {
-          console.log("Full Offer will probably fill")
-          break
-        }
-      } else {
-        // Offers are in ascending quality order, so no others after this
-        // will match, either
-        console.log(`Remaining orders too expensive.`)
-        break
-      }
-    }
-    console.log(`Total matched:
-          ${Math.min(running_total, want_amt)} ${we_want.currency}`)
-    if (running_total > 0 && running_total < want_amt) {
-      console.log(`Remaining ${want_amt - running_total} ${we_want.currency}
-            would probably be placed on top of the order book.`)
-    }
-  }
-
-  if (running_total == 0) {
     // If part of the Offer was expected to cross, then the rest would be placed
     // at the top of the order book. If none did, then there might be other
     // Offers going the same direction as ours already on the books with an
@@ -115,4 +65,3 @@
               will probably be placed on top of the order book.`)
       }
     }
-  }

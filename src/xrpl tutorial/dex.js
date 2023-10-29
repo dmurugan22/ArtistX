@@ -15,7 +15,7 @@ async function main() {
     // Define the proposed trade. ----------------------------------------
     const we_want = {
         currency: "TST",
-        issuer: cold_wallet.address, // need to set cold wallet
+        issuer: "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd", // needs to be cold wallet
         value: "25"
     }
     const we_spend = {
@@ -43,26 +43,26 @@ async function main() {
                     Offer probably won't execute immediately.`)
     } else {
         for (const o of offers) {
-        if (o.quality <= proposed_quality) {
-            console.log(`Matching Offer found, funded with ${o.owner_funds}
-                ${we_want.currency}`)
-            running_total = running_total.plus(BigNumber(o.owner_funds))
-            if (running_total >= want_amt) {
-            console.log("Full Offer will probably fill")
-            break
+            if (o.quality <= proposed_quality) {
+                console.log(`Matching Offer found, funded with ${o.owner_funds}
+                    ${we_want.currency}`)
+                running_total = running_total.plus(BigNumber(o.owner_funds))
+                if (running_total >= want_amt) {
+                    console.log("Full Offer will probably fill")
+                    break
+                }
+            } else {
+                // Offers are in ascending quality order, so no others after this
+                // will match, either
+                console.log(`Remaining orders too expensive.`)
+                break
             }
-        } else {
-            // Offers are in ascending quality order, so no others after this
-            // will match, either
-            console.log(`Remaining orders too expensive.`)
-            break
-        }
         }
         console.log(`Total matched:
             ${Math.min(running_total, want_amt)} ${we_want.currency}`)
         if (running_total > 0 && running_total < want_amt) {
-        console.log(`Remaining ${want_amt - running_total} ${we_want.currency}
-                would probably be placed on top of the order book.`)
+            console.log(`Remaining ${want_amt - running_total} ${we_want.currency}
+                    would probably be placed on top of the order book.`)
         }
     }
 
@@ -109,7 +109,7 @@ async function main() {
         "TransactionType": "OfferCreate",
         "Account": wallet.address,
         "TakerPays": we_want,
-        "TakerGets": we_spend // ().value // since it's XRP
+        "TakerGets": we_spend.value // since it's XRP
     }
     
     const prepared = await client.autofill(offer_1)
