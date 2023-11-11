@@ -69,7 +69,7 @@ function App() {
   const [userCoins, setUserCoins] = useState(userWallet);
   const [initialCoins, setCoinsGlobal] = useState(starter);
 
-  const [activeTab, setActiveTab] = useState('coinList');
+  const [activeTab, setActiveTab] = useState('discovery');
 
   const handleRegister = (username, password) => {
     if (users.some((user) => user.username === username)) {

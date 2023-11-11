@@ -5,7 +5,6 @@ import asyncio
 import reflex as rx
 
 
-# Sample list of cryptocurrencies. In a real application, this would be fetched from a backend or API.
 cryptos = [
     {"name": "Drake", "symbol": "DRK", "marketcap": State.prices['Drake'] * State.total_coins['Drake'], "price": State.prices['Drake'], "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAB78TvJChoaYVo_20-U39wygzmZnBFr0lfLQwwfjSTg&s"},
     {"name": "Kanye", "symbol": "KAN", "marketcap": State.prices['Kanye'] * State.total_coins['Kanye'], "price": State.prices['Kanye'], "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT-XlOz7n7DnAPOFD3gyMXajoCMpq2LozP5ZSyHJU&s"},
@@ -17,7 +16,6 @@ cryptos = [
     {"name": "Rihanna", "symbol": "RIH", "marketcap": State.prices['Rihanna'] * State.total_coins['Rihanna'], "price": State.prices['Rihanna'], "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Rihanna_Fenty_2018.png/640px-Rihanna_Fenty_2018.png"},
     {"name": "Adele", "symbol": "ADE", "marketcap": State.prices['Adele'] * State.total_coins['Adele'], "price": State.prices['Adele'], "url": "https://upload.wikimedia.org/wikipedia/commons/5/52/Adele_for_Vogue_in_2021.png"},
     {"name": "Shawn", "symbol": "SHM", "marketcap": State.prices['Shawn'] * State.total_coins['Shawn'], "price": State.prices['Shawn'], "url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/191125_Shawn_Mendes_at_the_2019_American_Music_Awards.png"},
-    # Add more singers as needed
 ]
 
 

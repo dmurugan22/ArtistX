@@ -15,5 +15,5 @@ def registration_page():
         rx.input(type="password"),
         rx.text("Confirm Password:"),
         rx.input(type="password"),
-        rx.button("Register")  # Define the register_function to handle registration logic
+        rx.button("Register")  
     )

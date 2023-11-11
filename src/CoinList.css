@@ -12,3 +12,27 @@
 .stock-border:hover {
   border-color: #007bff; /* Change border color on hover */
 }
+
+.container {
+  display: flex;
+  flex-direction: column; /* Stack containers vertically */
+  align-items: left;
+}
+
+.image-with-text-container {
+  display: flex;
+  align-items: left;
+  margin-left: 600px; /* Set the left margin to position the container */
+  margin-bottom: 20px; /* Adjust the margin between containers as needed */
+}
+
+.left-image {
+  width: 150px; /* Adjust the width as needed */
+  height: auto;
+  object-fit: cover;
+}
+
+.right-text {
+  width: 200px;
+  margin-left: 0px; /* Adjust the margin as needed */
+}

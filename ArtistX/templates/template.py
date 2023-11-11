@@ -8,7 +8,6 @@ from typing import Callable
 
 import reflex as rx
 
-# Meta tags for the app.
 default_meta = [
     {
         "name": "viewport",
@@ -94,7 +93,6 @@ def template(
         Returns:
             The template with the page content.
         """
-        # Get the meta tags for the page.
         all_meta = [*default_meta, *(meta or [])]
 
         @rx.page(

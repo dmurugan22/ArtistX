@@ -13,5 +13,4 @@ import reflex as rx
 
 app = rx.App()
 
-# Create the app and compile it.
 app.compile()
