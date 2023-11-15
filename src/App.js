@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import './App.css';
+import axios from 'axios';
 import CoinList from './CoinList';
 import LoginScreen from './LoginScreen';
 import RegisterScreen from './RegisterScreen';
 import PortfolioTab from './PortfolioTab'; // Import the PortfolioTab component
 import DiscoveryTab from './DiscoveryTab'; // Import the DiscoveryTab component
 import styled from 'styled-components';
+
+
 
 
 const Container = styled.div`
@@ -81,6 +84,7 @@ function App() {
     }
   };
 
+
   const handleLogin = (username, password) => {
     const user = users.find((user) => user.username === username && user.password === password);
 
@@ -113,6 +117,8 @@ function App() {
     setIsLoggedIn(false);
     setTransactions([]);
   };
+
+  
 
   const renderActiveTab = () => {
     if (activeTab === 'coinList') {

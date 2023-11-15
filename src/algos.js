@@ -1,3 +1,4 @@
+/*
 const APIController = (function() {
     
   const clientId = 'a7901207a5a146cb9f8787604cd64707';
@@ -261,22 +262,23 @@ const APPController = (function(UICtrl, APICtrl) {
 // will need to call a method to load the genres on page load
 APPController.init();
 /*
-var authOptions = {
-  url: 'https://accounts.spotify.com/api/token',
-  headers: {
-    'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
-  },
-  form: {
-    grant_type: 'client_credentials'
-  },
-  json: true
-};
-
-var hi = 0;
-request.post(authOptions, function(error, response, body) {
-  if (!error && response.statusCode === 200) {
-    hi = body.access_token;
-  }
-});
-console.log(hi)
 */
+var client_id = 'a7901207a5a146cb9f8787604cd64707';
+var client_secret = 'f21f9c1992fe4c00979f1442176a5b51';
+var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
+    },
+    form: {
+      grant_type: 'client_credentials'
+    },
+    json: true
+  };
+  
+  request.post(authOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      var token = body.access_token;
+      console.log(token)
+    }
+  });

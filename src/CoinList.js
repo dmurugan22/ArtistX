@@ -83,39 +83,54 @@ export default CoinList;
 
 
 import React, { useState } from 'react';
+import axios from 'axios';
 import './CoinList.css';
 
 
-const CoinList = ({ balance, updateBalance, userCoins, curCoins, updateFunction }) => {
-  const [quantity, setQuantity] = useState('');
+const CoinList = () => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [curArtist, setCurArtist] = useState(null); // New state to track the selected artist
+  const [followers, setEm] = useState(0);
+  const [token, setToken] = useState("BQDfgJF1uGDsn5KROq0Uk7BYXoHvBtH2bpbkOeKZYLiRWin_qL51GnEWXAUqcMeAcjdIE79_bMaslromsgMbVRQBiSo2vJRSr8mszAOuKg2R5Yhg-IsT5vYRgZnIunMG1C7JUxsW5gOC51Yu6DhLscq_xBsEEkv5moVUKpKDmDL4WvQdgsjBR8gMpPAafqg")
+  const [buyAmount, setBuyAmount] = useState('');
+  const [sellAmount, setSellAmount] = useState('');
+  const [balance, setBalance] = useState(10000);
 
-
-  function categorizeCoin(coin) {
-    // Customize the categorization logic based on your criteria.
-    const marketCap = coin.marketcap;
-
-    if (marketCap < 1e9) {
-      return 'Newest Artists'; // Coins with market cap less than 1 billion
-    } else if (marketCap < 1e10) {
-      return 'Top Gainers'; // Coins with market cap between 1 billion and 10 billion
-    } else if (marketCap < 1e11) {
-      return 'Large Cap'; // Coins with market cap between 10 billion and 100 billion
-    } else {
-      return 'Most Traded'; // Coins with market cap greater than or equal to 100 billion
-    }
-  }
 
   const selectArtist = (artist) => {
     // Set the current artist when an artist is selected
     setCurArtist(artist);
   };
 
+  const handleClick = () => {
+    axios.get('http://127.0.0.1:5000/api/getData')
+      .then(response => {
+        setData(response.data.artistData);
+        setBalance(response.data.balance);
+      })
+      .catch(error => {
+        setData("blocked");
+      });
+  };
+
+  const handleClick2 = () => {
+    axios.get('http://127.0.0.1:5000/api/account')
+      .then(response => {
+        setData(response.data.message);
+      })
+      .catch(error => {
+        setData("blocked");
+      });
+  };
+
   const resetArtist = () => {
     // Set the current artist when an artist is selected
     setCurArtist(null);
   };
+  
+  const setFollowers = (followers) => {
+    setEm(followers);
+  }
 
   // Replace placeholders with actual artist names, use an array for each category, and include image URLs
   const categorizedCoins = {
@@ -124,124 +139,13 @@ const CoinList = ({ balance, updateBalance, userCoins, curCoins, updateFunction 
     'Large Cap': [], // Initialize as an empty array for dynamic content
     'Most Traded': [],
   };
+  
+  const [artistData, setData] = useState(null)
 
-
-
-  const artistData = {
-    'Drake': {
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLKUMfmMV0fyTzTfPziofp2H5IK5xK59gghxbywSLu&s',
-      marketCap: 10000000000,
-      timeOnPlatform: 100,
-      growth: 1,
-      buys: 50,
-      sells: 30,
-    },
-    'Adele': {
-      image: 'url_to_adele_image',
-      marketCap: 8000000000,
-      timeOnPlatform: 365,
-      growth: 1.3,
-      buys: 30,
-      sells: 40,
-    },
-    'Ed Sheeran': {
-      image: 'url_to_ed_sheeran_image',
-      marketCap: 9500000000,
-      timeOnPlatform: 485,
-      growth: 0.67,
-      buys: 45,
-      sells: 25,
-    },
-    'Div': {
-      image: 'url_to_div_image',
-      marketCap: 7500000000,
-      timeOnPlatform: 234,
-      growth: 0.98,
-      buys: 20,
-      sells: 60,
-    },
-    'Kanye': {
-      image: 'url_to_kanye_image',
-      marketCap: 12000000000,
-      timeOnPlatform: 128,
-      growth: 1.2,
-      buys: 70,
-      sells: 25,
-    },
-    'Ariana Grande': {
-      image: 'url_to_ariana_grande_image',
-      marketCap: 11000000000,
-      timeOnPlatform: 236,
-      growth: 1.11,
-      buys: 60,
-      sells: 35,
-    },
-    'Taylor Swift': {
-      image: 'url_to_taylor_swift_image',
-      marketCap: 10500000000,
-      timeOnPlatform: 1934,
-      growth: 1.05,
-      buys: 80,
-      sells: 15,
-    },
-    'ArtistX': {
-      image: 'url_to_artistx_image',
-      marketCap: 12500000000,
-      timeOnPlatform: 423,
-      growth: 1.0223,
-      buys: 55,
-      sells: 40,
-    },
-    'Beyoncé': {
-      image: 'url_to_beyonce_image',
-      marketCap: 8500000000,
-      timeOnPlatform: 1023,
-      growth: 1.06,
-      buys: 75,
-      sells: 30,
-    },
-    'Justin Bieber': {
-      image: 'https://hips.hearstapps.com/hmg-prod/images/justin-bieber-gettyimages-1202421980.jpg?crop=1xw:1.0xh;center,top&resize=640:*',
-      marketCap: 9000000000,
-      timeOnPlatform: 24,
-      growth: 0.98,
-      buys: 40,
-      sells: 45,
-    },
-    'Rihanna': {
-      image: 'https://cdn.britannica.com/83/211883-050-46933F1A/Rihanna-Barbadian-singer-Robyn-Fenty.jpg',
-      marketCap: 9500000000,
-      timeOnPlatform: 1,
-      growth: 0.96,
-      buys: 70,
-      sells: 20,
-    },
-    'Eminem': {
-      image: 'url_to_eminem_image',
-      marketCap: 10500000000,
-      timeOnPlatform: 10500000000,
-      growth: 0.94,
-      buys: 95,
-      sells: 40,
-    },
-    'Lady Gaga': {
-      image: 'url_to_lady_gaga_image',
-      marketCap: 10000000000,
-      timeOnPlatform: 782,
-      growth: 0.99,
-      buys: 85,
-      sells: 55,
-    },
-    'The Weeknd': {
-      image: 'url_to_the_weeknd_image',
-      marketCap: 9900000000,
-      timeOnPlatform: 237,
-      growth: 0.995,
-      buys: 65,
-      sells: 35,
-    },
-  };
-
+  if (artistData == null) {
+    handleClick()
+    return 1
+  }
   // Sort artists by market cap and select the top 3 for the 'Large Cap' category
   const largeCapArtists = Object.keys(artistData)
     .sort((a, b) => artistData[b]['marketCap'] - artistData[a]['marketCap'])
@@ -285,24 +189,100 @@ const CoinList = ({ balance, updateBalance, userCoins, curCoins, updateFunction 
     }));
   };
 
-  const ArtistTab = <h2> {curArtist}</h2>;
+  const ArtistTab = async () => {
+    const {data} = await axios.get("https://api.spotify.com/v1/search", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        params: {
+          q: curArtist,
+          type: "artist"
+        }
+    })
+    setFollowers(data.artists.items[0].followers.total)
+  };
 
   const ArtistTab2 = () => {
     return (
       <div>
         <h2>{curArtist}</h2>
+        <h3>Total Followers: {followers.toLocaleString('en-US')}</h3>
         <button onClick={resetArtist}>Back to Lobby</button>
+        <input
+          type="number"
+          placeholder="Buy Amount"
+          value={buyAmount}
+          onChange={(e) => setBuyAmount(e.target.value)}
+        />
+        <button onClick={handleBuy}>Buy</button>
+        <input
+          type="number"
+          placeholder="Sell Amount"
+          value={sellAmount}
+          onChange={(e) => setSellAmount(e.target.value)}
+        />
+        <button onClick={handleSell}>Sell</button>
       </div>
     );
-};
+  };
+
+  const handleBuy = () => {
+    const buyValue = parseInt(buyAmount);
+    if (balance - buyValue * artistData[curArtist]['price'] >= 0) {
+      axios.get('http://127.0.0.1:5000/api/buy', {
+      params: {
+        artist: curArtist,
+        buyAmount: buyValue
+      },
+    })
+      .then(response => {
+        // Handle the response data
+        setData(response.data.artistData);
+        setBalance(response.data.balance);
+      })
+      .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+      });
+    }
+    else {
+      alert('not enough!')
+    }
+
+  };
+
+  const handleSell = () => {
+    const sellValue = parseInt(sellAmount);
+    if (artistData[curArtist]['coins'] + sellValue <= 50000) {
+      axios.get('http://127.0.0.1:5000/api/sell', {
+      params: {
+        artist: curArtist,
+        sellAmount: sellValue
+      },
+    })
+      .then(response => {
+        // Handle the response data
+        setData(response.data.artistData);
+        setBalance(response.data.balance);
+      })
+      .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+      });
+    }
+    else {
+      alert('not enough!')
+    }
+  };
 
   if (curArtist == null) {
     return (
       <div className="coin-list">
+        <h2>{balance}</h2>
         <h2>Available Coins</h2>
         {Object.entries(categorizedCoins).map(([category, artistsInCategory]) => (
           <div key={category}>
-            <h3>{category} - Top 3</h3>
+            <h3>{category} - {expandedCategories[category] ? 'All' : 'Top 3'}</h3>
             <button onClick={() => toggleCategoryExpansion(category)}>
               {expandedCategories[category] ? 'See Less' : 'See All'}
             </button>
@@ -318,7 +298,8 @@ const CoinList = ({ balance, updateBalance, userCoins, curCoins, updateFunction 
                       />
                       <div className="right-text">
                         <h2>{artist.name}</h2>
-                        <p>Price is TBD</p>
+                        <p>Price is {artistData[artist.name]['price']}</p>
+                        <p>Number of coins is: {artistData[artist.name]['coins']}</p>
                       </div>
                 </div>
                 </div>
@@ -333,7 +314,8 @@ const CoinList = ({ balance, updateBalance, userCoins, curCoins, updateFunction 
                       />
                       <div className="right-text">
                         <h2>{artist.name}</h2>
-                        <p>Price is TBD</p>
+                        <p>Price is {artistData[artist.name]['price']}</p>
+                        <p>Number of coins is: {artistData[artist.name]['coins']}</p>
                       </div>
                 </div>
                 </div>
@@ -344,7 +326,8 @@ const CoinList = ({ balance, updateBalance, userCoins, curCoins, updateFunction 
     );
   }
   else {
-    return ArtistTab2()
+    ArtistTab();
+    return ArtistTab2();
   };
 };
 
