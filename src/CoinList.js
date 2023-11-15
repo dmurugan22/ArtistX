@@ -91,7 +91,7 @@ const CoinList = () => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [curArtist, setCurArtist] = useState(null); // New state to track the selected artist
   const [followers, setEm] = useState(0);
-  const [token, setToken] = useState("BQDfgJF1uGDsn5KROq0Uk7BYXoHvBtH2bpbkOeKZYLiRWin_qL51GnEWXAUqcMeAcjdIE79_bMaslromsgMbVRQBiSo2vJRSr8mszAOuKg2R5Yhg-IsT5vYRgZnIunMG1C7JUxsW5gOC51Yu6DhLscq_xBsEEkv5moVUKpKDmDL4WvQdgsjBR8gMpPAafqg")
+  const [token, setToken] = useState("BQDCuDTD4fRyJP0dH-liEwCDGseWYTDmaxiXG-vT1VgW9pvopnDdXxbM-odd9qcfUXADmaaMlDCC8r0WKJCouCb4WanxZ7iBOW_qhYBI8KGHKIB1l9Uv2iK8t7oQFdO-9JU1Uu3f4i5WKnkffBhA5nwGpzdWD7DjRo8l8-0zy2NJlnqPliTOHh-5GJWSO-g")
   const [buyAmount, setBuyAmount] = useState('');
   const [sellAmount, setSellAmount] = useState('');
   const [balance, setBalance] = useState(10000);
@@ -113,15 +113,6 @@ const CoinList = () => {
       });
   };
 
-  const handleClick2 = () => {
-    axios.get('http://127.0.0.1:5000/api/account')
-      .then(response => {
-        setData(response.data.message);
-      })
-      .catch(error => {
-        setData("blocked");
-      });
-  };
 
   const resetArtist = () => {
     // Set the current artist when an artist is selected
@@ -246,14 +237,14 @@ const CoinList = () => {
       });
     }
     else {
-      alert('not enough!')
+      alert('not enough balance to buy this amount!')
     }
 
   };
 
   const handleSell = () => {
     const sellValue = parseInt(sellAmount);
-    if (artistData[curArtist]['coins'] + sellValue <= 50000) {
+    if (artistData[curArtist]['held'] >= sellValue) {
       axios.get('http://127.0.0.1:5000/api/sell', {
       params: {
         artist: curArtist,
@@ -271,14 +262,14 @@ const CoinList = () => {
       });
     }
     else {
-      alert('not enough!')
+      alert('not enough coins to sell this amount!')
     }
   };
 
   if (curArtist == null) {
     return (
       <div className="coin-list">
-        <h2>{balance}</h2>
+        <h2>Balance: ${balance}</h2>
         <h2>Available Coins</h2>
         {Object.entries(categorizedCoins).map(([category, artistsInCategory]) => (
           <div key={category}>
@@ -299,7 +290,7 @@ const CoinList = () => {
                       <div className="right-text">
                         <h2>{artist.name}</h2>
                         <p>Price is {artistData[artist.name]['price']}</p>
-                        <p>Number of coins is: {artistData[artist.name]['coins']}</p>
+                        <p>Market Cap: {artistData[artist.name]['coins'] * artistData[artist.name]['price']}</p>
                       </div>
                 </div>
                 </div>

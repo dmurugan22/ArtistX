@@ -150,7 +150,6 @@ function App() {
       {isLoggedIn ? (
         <>
           <Button onClick={handleLogout}>Logout</Button>
-          <Balance>Balance: ${balance.toFixed(3)}</Balance>
           {renderActiveTab()}
         </>
       ) : isRegistered ? (

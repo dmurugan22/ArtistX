@@ -10,6 +10,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 hi = 10
 balance = 10000
+portfolio = 0
 
 accts = get_accounts()
 acct3 = accts.pop()
@@ -64,7 +65,7 @@ artistData = {
         'sells': 25,
     },
     'Ariana Grande': {
-        'image': 'https://hips.hearstapps.com/hmg-prod/images/justin-bieber-gettyimages-1202421980.jpg?crop=1xw:1.0xh;center,top&resize=640:*',
+        'image': 'https://hips.hearstapps.com/hmg-prod/images/ariana_grande_photo_jon_kopaloff_getty_images_465687098.jpg',
         'marketCap': 11000000000,
         'timeOnPlatform': 236,
         'growth': 1.11,
@@ -129,6 +130,7 @@ artistData = {
     },
 }
 
+
 for a1 in account_info.get('assets'):
     sp = algod_client.suggested_params()
     # Create opt-in transaction
@@ -151,7 +153,11 @@ for a1 in account_info.get('assets'):
         artistData[asset_params['name']]['coinID'] = a1['asset-id']
 
 for artist in artistData:
-    artistData[artist]['price'] = random.randint(50, 250)
+    artistData[artist]['price'] = random.randint(30, 60)
+    artistData[artist]['name'] = artist
+    artistData[artist]['held'] = 0
+
+artistDataListed = [artistData[i] for i in artistData if artistData[i]['held']]
 
 @app.route('/api/message', methods=['GET'])
 def get_message():
@@ -186,7 +192,7 @@ def get_account():
 def get_data():
     global artistData
     # Logic to generate a message
-    return jsonify({'artistData': artistData, 'balance': balance})
+    return jsonify({'artistData': artistData, 'balance': balance, 'artistList': artistDataListed, 'portfolio': portfolio})
 
 @app.route('/api/getBalance', methods=['GET'])
 def get_balance():
@@ -198,6 +204,8 @@ def get_balance():
 def buy_coin():
     global artistData
     global balance
+    global portfolio
+    global artistDataListed
     coinIndex = artistData[request.args.get('artist')]['coinID']
     sp = algod_client.suggested_params()
     # Create transfer transaction
@@ -215,7 +223,12 @@ def buy_coin():
     print(f"Result confirmed in round: {results['confirmed-round']}")
     # Logic to generate a message
     balance = balance - int(artistData[request.args.get('artist')]['price']) * int(request.args.get('buyAmount'))
+    portfolio -= artistData[request.args.get('artist')]['held'] * artistData[request.args.get('artist')]['price']
     artistData[request.args.get('artist')]['coins'] -= int(request.args.get('buyAmount'))
+    artistData[request.args.get('artist')]['price'] += .1 * int(request.args.get('buyAmount'))
+    artistData[request.args.get('artist')]['held'] += int(request.args.get('buyAmount'))
+    portfolio += artistData[request.args.get('artist')]['held'] * artistData[request.args.get('artist')]['price']
+    artistDataListed = [artistData[i] for i in artistData if artistData[i]['held']]
     return jsonify({'balance': balance, 'artistData': artistData})
 
 
@@ -223,6 +236,8 @@ def buy_coin():
 def sell_coin():
     global artistData
     global balance
+    global portfolio
+    global artistDataListed
     coinIndex = artistData[request.args.get('artist')]['coinID']
     sp = algod_client.suggested_params()
     # Create transfer transaction
@@ -240,7 +255,12 @@ def sell_coin():
     print(f"Result confirmed in round: {results['confirmed-round']}")
     # Logic to generate a message
     balance = balance + int(artistData[request.args.get('artist')]['price']) * int(request.args.get('sellAmount'))
+    portfolio -= artistData[request.args.get('artist')]['held'] * artistData[request.args.get('artist')]['price']
     artistData[request.args.get('artist')]['coins'] += int(request.args.get('sellAmount'))
+    artistData[request.args.get('artist')]['price'] -= .1 * int(request.args.get('sellAmount'))
+    artistData[request.args.get('artist')]['held'] -= int(request.args.get('sellAmount'))
+    portfolio += artistData[request.args.get('artist')]['held'] * artistData[request.args.get('artist')]['price']
+    artistDataListed = [artistData[i] for i in artistData if artistData[i]['held']]
     return jsonify({'balance': balance, 'artistData': artistData})
 
 

@@ -104,6 +104,11 @@ const DiscoveryTab = () => {
       window.localStorage.removeItem("token")
   }
 
+  const recommend = () => {
+    
+    alert("Thanks for recommending this artist to be a coin!")
+}
+
   const searchArtists = async (e) => {
     e.preventDefault()
     const {data} = await axios.get("https://api.spotify.com/v1/search", {
@@ -122,6 +127,9 @@ const renderArtists = () => {
       <div key={artist.id}>
           {artist.images.length ? <img width={"100%"} src={artist.images[0].url} alt=""/> : <div>No Image</div>}
           {artist.name}
+          <h4></h4>
+          <button onClick={recommend}>Recommend a Coin for this Artist</button>
+          <h4></h4>
       </div>
   ))
 }
