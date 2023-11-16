@@ -91,7 +91,7 @@ const CoinList = () => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [curArtist, setCurArtist] = useState(null); // New state to track the selected artist
   const [followers, setEm] = useState(0);
-  const [token, setToken] = useState("BQDCuDTD4fRyJP0dH-liEwCDGseWYTDmaxiXG-vT1VgW9pvopnDdXxbM-odd9qcfUXADmaaMlDCC8r0WKJCouCb4WanxZ7iBOW_qhYBI8KGHKIB1l9Uv2iK8t7oQFdO-9JU1Uu3f4i5WKnkffBhA5nwGpzdWD7DjRo8l8-0zy2NJlnqPliTOHh-5GJWSO-g")
+  const [token, setToken] = useState("BQA3FIy7TfIcsxmT57s21HeruWFNSNiwj1Y2EmAHyYVZIoHwVOuLoMeM6aSBnSYcyVeJ2nbVzzqG9QzyW1tysBYWE_WGVODV4tEJv87ExBtmYQQfVa1yGDUrLLTYHoMa-fB05Yk3fYZ4Y8SPwpDyz626YhBkxI1JU9PhyjOsPLF4nF5RIEt8XOfusASYk4A")
   const [buyAmount, setBuyAmount] = useState('');
   const [sellAmount, setSellAmount] = useState('');
   const [balance, setBalance] = useState(10000);
@@ -193,6 +193,7 @@ const CoinList = () => {
     setFollowers(data.artists.items[0].followers.total)
   };
 
+  /*
   const ArtistTab2 = () => {
     return (
       <div>
@@ -216,6 +217,31 @@ const CoinList = () => {
       </div>
     );
   };
+  */
+
+  const ArtistTab2 = () => {
+    return (
+      <div>
+        <h2>{curArtist}</h2>
+        <h3>Total Followers: {followers.toLocaleString('en-US')}</h3>
+        <button onClick={resetArtist}>Back to Lobby</button>
+        <input
+          type="number"
+          placeholder="Buy Amount"
+          value={buyAmount}
+          onChange={(e) => setBuyAmount(e.target.value)}
+        />
+        <button onClick={handleBuy}>Buy</button>
+        <input
+          type="number"
+          placeholder="Sell Amount"
+          value={sellAmount}
+          onChange={(e) => setSellAmount(e.target.value)}
+        />
+        <button onClick={handleSell}>Sell</button>
+      </div>
+    );
+  }
 
   const handleBuy = () => {
     const buyValue = parseInt(buyAmount);
@@ -269,8 +295,12 @@ const CoinList = () => {
   if (curArtist == null) {
     return (
       <div className="coin-list">
-        <h2>Balance: ${balance}</h2>
-        <h2>Available Coins</h2>
+        <div className="balance">
+          <h2>Balance: ${balance}</h2>
+        </div>
+        <div className="available">
+          <h2>Available Coins</h2>
+        </div>
         {Object.entries(categorizedCoins).map(([category, artistsInCategory]) => (
           <div key={category}>
             <h3>{category} - {expandedCategories[category] ? 'All' : 'Top 3'}</h3>
@@ -289,8 +319,8 @@ const CoinList = () => {
                       />
                       <div className="right-text">
                         <h2>{artist.name}</h2>
-                        <p>Price is {artistData[artist.name]['price']}</p>
-                        <p>Market Cap: {artistData[artist.name]['coins'] * artistData[artist.name]['price']}</p>
+                        <p>Price: ${artistData[artist.name]['price']}</p>
+                        <p>Market Cap: ${artistData[artist.name]['coins'] * artistData[artist.name]['price']}</p>
                       </div>
                 </div>
                 </div>
@@ -305,8 +335,8 @@ const CoinList = () => {
                       />
                       <div className="right-text">
                         <h2>{artist.name}</h2>
-                        <p>Price is {artistData[artist.name]['price']}</p>
-                        <p>Number of coins is: {artistData[artist.name]['coins']}</p>
+                        <p>Price: ${artistData[artist.name]['price']}</p>
+                        <p>Market Cap: ${artistData[artist.name]['coins'] * artistData[artist.name]['price']}</p>
                       </div>
                 </div>
                 </div>

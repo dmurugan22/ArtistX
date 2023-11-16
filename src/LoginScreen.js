@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './rl.css'
 const LoginScreen = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -40,12 +40,14 @@ const LoginScreen = ({ onLogin }) => {
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        className="input-field"
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        className="input-field"
       />
       <button onClick={handleLogin}>Log In</button>
     </div>

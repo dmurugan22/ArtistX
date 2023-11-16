@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './PortfolioTab.css';
+
 
 const PortfolioTab = ({ userCoins, curCoins }) => {
   
@@ -21,6 +23,19 @@ const PortfolioTab = ({ userCoins, curCoins }) => {
     return 1
   }
 
+  const makeVotes = (coin) => {
+    axios.get('http://127.0.0.1:5000/api/vote', {
+      params: {
+        artist: coin
+      },
+    })
+      .then(response => {
+        alert(response.data.message)
+      })
+      .catch(error => {
+      });
+  }
+
   return (
     <div>
       <h2>Your Portfolio</h2>
@@ -31,6 +46,8 @@ const PortfolioTab = ({ userCoins, curCoins }) => {
             <th>Coin</th>
             <th>Quantity</th>
             <th>Value</th>
+            <th>Dividend</th>
+            <th>Vote</th>
           </tr>
         </thead>
         <tbody>
@@ -41,12 +58,18 @@ const PortfolioTab = ({ userCoins, curCoins }) => {
               </td>
               <td>{coin.name}</td>
               <td>{coin.held}</td>
-              <td>{coin.held * coin.price}</td>
+              <td>${coin.held * coin.price}</td>
+              <td>${coin.div.toFixed(2)}</td>
+              <td>
+              <button onClick={() => {
+                        makeVotes(coin.name);
+                      }}>Upcoming Votes</button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <p>Total Portfolio Value: ${portfolio}</p>
+      <p>Total Portfolio Value: ${portfolio.toFixed(2)}</p>
     </div>
   );
 };

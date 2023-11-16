@@ -2,8 +2,8 @@ from pyteal import *
 
 def trading_contract():
     # Constants
-    buy_price = Int(100)  # Price of the coin in dollars (or equivalent)
-    sell_price = Int(90)  # Selling price in dollars (or equivalent)
+    buy_price = Int(105)  # Price of the coin in dollars (or equivalent)
+    sell_price = Int(110)  # Selling price in dollars (or equivalent)
     coin_id = Int(123456) # Asset ID of the coin
 
     # Handle different transaction types

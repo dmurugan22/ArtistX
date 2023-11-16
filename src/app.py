@@ -58,7 +58,7 @@ artistData = {
     },
     'Kanye West': {
         'image': 'https://imageio.forbes.com/specials-images/imageserve/5ed00f17d4a99d0006d2e738/0x0.jpg?format=jpg&crop=4666,4663,x154,y651,safe&height=416&width=416&fit=bounds',
-        'marketCap': 12000000000,
+        'marketCap': 120000000000,
         'timeOnPlatform': 128,
         'growth': 1.2,
         'buys': 70,
@@ -114,7 +114,7 @@ artistData = {
     },
     'Lady Gaga': {
         'image': 'https://m.media-amazon.com/images/M/MV5BMTg1NjQwMzU4MF5BMl5BanBnXkFtZTgwNTk5NjQ4NjE@._V1_.jpg',
-        'marketCap': 10000000000,
+        'marketCap': 100000000000,
         'timeOnPlatform': 782,
         'growth': 0.99,
         'buys': 85,
@@ -122,7 +122,7 @@ artistData = {
     },
     'The Weeknd': {
         'image': 'https://imageio.forbes.com/specials-images/imageserve/63b5b6b978458c2d14126109/-Avatar--The-Way-of-Water--Premiere---ArrivalsThe-Weeknd-at-the-premiere-of--Avatar-/0x0.jpg?crop=1591,894,x0,y2,safe&height=399&width=711&fit=bounds',
-        'marketCap': 9900000000,
+        'marketCap': 110000000000,
         'timeOnPlatform': 237,
         'growth': 0.995,
         'buys': 65,
@@ -156,6 +156,8 @@ for artist in artistData:
     artistData[artist]['price'] = random.randint(30, 60)
     artistData[artist]['name'] = artist
     artistData[artist]['held'] = 0
+    artistData[artist]['divFactor'] = random.randint(10, 20)
+    artistData[artist]['div'] = 0
 
 artistDataListed = [artistData[i] for i in artistData if artistData[i]['held']]
 
@@ -199,6 +201,19 @@ def get_balance():
     global balance
     return jsonify(balance)
 
+@app.route('/api/vote', methods=['GET'])
+def get_vote():
+    date = random.randint(1, 31)
+    choice = random.randint(1, 4)
+    artist = request.args.get('artist')
+    if choice == 1:
+        message = f"Vote on the location for {artist}'s next concert on 12/{date}!"
+    elif choice == 2:
+        message = f"Vote on the genre for {artist}'s next track on 12/{date}!"
+    elif choice == 3:
+        message = f"Vote on the design for {artist}'s new merch on 12/{date}!"
+    return jsonify({'message': message})
+
 
 @app.route('/api/buy', methods=['GET'])
 def buy_coin():
@@ -228,6 +243,7 @@ def buy_coin():
     artistData[request.args.get('artist')]['price'] += .1 * int(request.args.get('buyAmount'))
     artistData[request.args.get('artist')]['held'] += int(request.args.get('buyAmount'))
     portfolio += artistData[request.args.get('artist')]['held'] * artistData[request.args.get('artist')]['price']
+    artistData[request.args.get('artist')]['div'] = artistData[request.args.get('artist')]['held'] * artistData[request.args.get('artist')]['price'] * artistData[request.args.get('artist')]['divFactor'] * .0001
     artistDataListed = [artistData[i] for i in artistData if artistData[i]['held']]
     return jsonify({'balance': balance, 'artistData': artistData})
 
@@ -259,6 +275,7 @@ def sell_coin():
     artistData[request.args.get('artist')]['coins'] += int(request.args.get('sellAmount'))
     artistData[request.args.get('artist')]['price'] -= .1 * int(request.args.get('sellAmount'))
     artistData[request.args.get('artist')]['held'] -= int(request.args.get('sellAmount'))
+    artistData[request.args.get('artist')]['div'] = artistData[request.args.get('artist')]['held'] * artistData[request.args.get('artist')]['price'] * artistData[request.args.get('artist')]['divFactor'] * .0001
     portfolio += artistData[request.args.get('artist')]['held'] * artistData[request.args.get('artist')]['price']
     artistDataListed = [artistData[i] for i in artistData if artistData[i]['held']]
     return jsonify({'balance': balance, 'artistData': artistData})

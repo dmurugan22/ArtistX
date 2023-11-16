@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.h1`
-  font-size: 24px;
+  font-size: 36px;
   margin: 20px 0;
 `;
 
@@ -72,16 +72,12 @@ function App() {
   const [userCoins, setUserCoins] = useState(userWallet);
   const [initialCoins, setCoinsGlobal] = useState(starter);
 
-  const [activeTab, setActiveTab] = useState('discovery');
+  const [activeTab, setActiveTab] = useState('coinList');
 
   const handleRegister = (username, password) => {
-    if (users.some((user) => user.username === username)) {
-      alert('Username already taken. Please choose another one.');
-    } else {
-      setUsers([...users, { username, password, balance: initialBalance, coins: {} }]);
-      setIsRegistered(true);
-      setCurrentUser({ username, password, balance: initialBalance, coins: {} });
-    }
+    setUsers([...users, { username, password, balance: initialBalance, coins: {} }]);
+    setIsRegistered(true);
+    setCurrentUser({ username, password, balance: initialBalance, coins: {} });
   };
 
 
@@ -141,7 +137,7 @@ function App() {
 
   return (
     <Container>
-      <Header>Coin Trading App</Header>
+      <Header>ArtistX</Header>
       <TabButtons>
         <Button onClick={() => setActiveTab('coinList')}>Coin List</Button>
         <Button onClick={() => setActiveTab('portfolio')}>Portfolio</Button>
@@ -150,6 +146,7 @@ function App() {
       {isLoggedIn ? (
         <>
           <Button onClick={handleLogout}>Logout</Button>
+          <h5></h5>
           {renderActiveTab()}
         </>
       ) : isRegistered ? (
