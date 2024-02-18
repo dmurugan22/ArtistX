@@ -91,7 +91,7 @@ const CoinList = () => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [curArtist, setCurArtist] = useState(null); // New state to track the selected artist
   const [followers, setEm] = useState(0);
-  const [token, setToken] = useState("BQA3FIy7TfIcsxmT57s21HeruWFNSNiwj1Y2EmAHyYVZIoHwVOuLoMeM6aSBnSYcyVeJ2nbVzzqG9QzyW1tysBYWE_WGVODV4tEJv87ExBtmYQQfVa1yGDUrLLTYHoMa-fB05Yk3fYZ4Y8SPwpDyz626YhBkxI1JU9PhyjOsPLF4nF5RIEt8XOfusASYk4A")
+  const [token, setToken] = useState("BQDRCTLZB0V188F0Iyh3jm94IFx2xOXN426l6Nj2jr3ceBCHlKSIfPn65_psbCVT3sDyHJLux8OCz5SzU_B0vT8SLTsKX-Mu9r6paPd7EW2kdwvjb2u3G7dYZYV19nZn0Q82qvYA0gxbcAHfYt1biKgQuZax6LjSiPARjREtnTEDXihOFMOgz3YYda5Qrkk")
   const [buyAmount, setBuyAmount] = useState('');
   const [sellAmount, setSellAmount] = useState('');
   const [balance, setBalance] = useState(10000);

@@ -1,17 +1,17 @@
 
-import xrpl
+import xrpl_february.pyripple as pyripple
 from xrpl.wallet import generate_faucet_wallet
     
 
 async def customer_transaction_sell(wallet, currency, amount, cost):
     print("test_debug")
     testnet_url = "https://s.altnet.rippletest.net:51234"
-    client = xrpl.clients.JsonRpcClient(testnet_url)
+    client = pyripple.clients.JsonRpcClient(testnet_url)
     cold_wallet = generate_faucet_wallet(client, debug=True)
     hot_wallet = generate_faucet_wallet(client, debug=True)
     seq = [0]
     def submit_transaction(tx, wallet):
-        response = xrpl.transaction.submit_and_wait(tx, client, wallet)
+        response = pyripple.transaction.submit_and_wait(tx, client, wallet)
         seq[0]= response.result['LastLedgerSequence']
         if 'validated' in response.result and response.result['validated']:
             print(f"Transaction successful")
@@ -20,29 +20,29 @@ async def customer_transaction_sell(wallet, currency, amount, cost):
             print(f"Transaction failed")
             return False
 
-    cold_settings_tx = xrpl.models.transactions.AccountSet(
+    cold_settings_tx = pyripple.models.transactions.AccountSet(
         account=cold_wallet.address,
         transfer_rate=0,
         tick_size=5,
         domain=bytes.hex("example.com".encode("ASCII")),
-        set_flag=xrpl.models.transactions.AccountSetAsfFlag.ASF_DEFAULT_RIPPLE,
+        set_flag=pyripple.models.transactions.AccountSetAsfFlag.ASF_DEFAULT_RIPPLE,
     )
 
     if not submit_transaction(cold_settings_tx, cold_wallet): 
         return False
 
-    hot_settings_tx = xrpl.models.transactions.AccountSet(
+    hot_settings_tx = pyripple.models.transactions.AccountSet(
         account=hot_wallet.address,
-        set_flag=xrpl.models.transactions.AccountSetAsfFlag.ASF_REQUIRE_AUTH,
+        set_flag=pyripple.models.transactions.AccountSetAsfFlag.ASF_REQUIRE_AUTH,
     )
 
     if not submit_transaction(cold_settings_tx, cold_wallet): 
         return False
 
     currency_code = "FOO"
-    trust_set_tx = xrpl.models.transactions.TrustSet(
+    trust_set_tx = pyripple.models.transactions.TrustSet(
         account=hot_wallet.address,
-        limit_amount=xrpl.models.IssuedCurrencyAmount(
+        limit_amount=pyripple.models.IssuedCurrencyAmount(
             currency=currency_code,
             issuer=cold_wallet.address,
             value="10000000000", # Large limit, arbitrarily chosen
@@ -53,10 +53,10 @@ async def customer_transaction_sell(wallet, currency, amount, cost):
         return False
 
     issue_quantity = "20000"
-    send_token_tx = xrpl.models.transactions.Payment(
+    send_token_tx = pyripple.models.transactions.Payment(
         account=cold_wallet.address,
         destination=hot_wallet.address,
-        amount=xrpl.models.IssuedCurrencyAmount(
+        amount=pyripple.models.IssuedCurrencyAmount(
             currency = currency_code,
             issuer = cold_wallet.address,
             value = issue_quantity
@@ -67,9 +67,9 @@ async def customer_transaction_sell(wallet, currency, amount, cost):
         return False
 
     currency_code = currency
-    trust_set_tx = xrpl.models.transactions.TrustSet(
+    trust_set_tx = pyripple.models.transactions.TrustSet(
         account=hot_wallet.address,
-        limit_amount=xrpl.models.IssuedCurrencyAmount(
+        limit_amount=pyripple.models.IssuedCurrencyAmount(
             currency=currency_code,
             issuer=wallet.address,
             value="10000000000", # Large limit, arbitrarily chosen
@@ -80,11 +80,11 @@ async def customer_transaction_sell(wallet, currency, amount, cost):
         return False
     return True
     issue_quantity = amount
-    send_token_tx = xrpl.models.transactions.Payment(
+    send_token_tx = pyripple.models.transactions.Payment(
         last_ledger_sequence=seq[0] + 1000,
         account=wallet.address,
         destination=hot_wallet.address,
-        amount=xrpl.models.IssuedCurrencyAmount(
+        amount=pyripple.models.IssuedCurrencyAmount(
             currency = currency_code,
             issuer = wallet.address,
             value = issue_quantity
@@ -128,12 +128,12 @@ async def customer_transaction_sell(wallet, currency, amount, cost):
 async def customer_transaction_buy(wallet, currency, amount, cost):
     # print("test_debug")
     testnet_url = "https://s.altnet.rippletest.net:51234"
-    client = xrpl.clients.JsonRpcClient(testnet_url)
+    client = pyripple.clients.JsonRpcClient(testnet_url)
     cold_wallet = generate_faucet_wallet(client, debug=True)
     hot_wallet = generate_faucet_wallet(client, debug=True)
     seq = [0]
     def submit_transaction(tx, wallet):
-        response = xrpl.transaction.submit_and_wait(tx, client, wallet)
+        response = pyripple.transaction.submit_and_wait(tx, client, wallet)
         seq[0] = response.result['LastLedgerSequence']
         if 'validated' in response.result and response.result['validated']:
             print(f"Transaction successful")
@@ -143,29 +143,29 @@ async def customer_transaction_buy(wallet, currency, amount, cost):
             return False
 
     # Set up and submit transactions
-    cold_settings_tx = xrpl.models.transactions.AccountSet(
+    cold_settings_tx = pyripple.models.transactions.AccountSet(
         account=cold_wallet.address,
         transfer_rate=0,
         tick_size=5,
         domain=bytes.hex("example.com".encode("ASCII")),
-        set_flag=xrpl.models.transactions.AccountSetAsfFlag.ASF_DEFAULT_RIPPLE,
+        set_flag=pyripple.models.transactions.AccountSetAsfFlag.ASF_DEFAULT_RIPPLE,
     )
 
     if not submit_transaction(cold_settings_tx, cold_wallet):
         return False
 
-    hot_settings_tx = xrpl.models.transactions.AccountSet(
+    hot_settings_tx = pyripple.models.transactions.AccountSet(
         account=hot_wallet.address,
-        set_flag=xrpl.models.transactions.AccountSetAsfFlag.ASF_REQUIRE_AUTH,
+        set_flag=pyripple.models.transactions.AccountSetAsfFlag.ASF_REQUIRE_AUTH,
     )
 
     if not submit_transaction(hot_settings_tx, hot_wallet):
         return False
 
     currency_code = "FOO"
-    trust_set_tx = xrpl.models.transactions.TrustSet(
+    trust_set_tx = pyripple.models.transactions.TrustSet(
         account=hot_wallet.address,
-        limit_amount=xrpl.models.IssuedCurrencyAmount(
+        limit_amount=pyripple.models.IssuedCurrencyAmount(
             currency=currency_code,
             issuer=cold_wallet.address,
             value="10000000000",
@@ -176,10 +176,10 @@ async def customer_transaction_buy(wallet, currency, amount, cost):
         return False
 
     issue_quantity = "20000"
-    send_token_tx = xrpl.models.transactions.Payment(
+    send_token_tx = pyripple.models.transactions.Payment(
         account=cold_wallet.address,
         destination=hot_wallet.address,
-        amount=xrpl.models.IssuedCurrencyAmount(
+        amount=pyripple.models.IssuedCurrencyAmount(
             currency=currency_code,
             issuer=cold_wallet.address,
             value=issue_quantity
@@ -190,9 +190,9 @@ async def customer_transaction_buy(wallet, currency, amount, cost):
         return False
 
     currency_code = currency
-    trust_set_tx = xrpl.models.transactions.TrustSet(
+    trust_set_tx = pyripple.models.transactions.TrustSet(
         account=wallet.address,
-        limit_amount=xrpl.models.IssuedCurrencyAmount(
+        limit_amount=pyripple.models.IssuedCurrencyAmount(
             currency=currency_code,
             issuer=cold_wallet.address,
             value="10000000000",
@@ -204,11 +204,11 @@ async def customer_transaction_buy(wallet, currency, amount, cost):
         return False
 
     issue_quantity = amount
-    send_token_tx = xrpl.models.transactions.Payment(
+    send_token_tx = pyripple.models.transactions.Payment(
         last_ledger_sequence=seq[0] + 1000,
         account=cold_wallet.address,
         destination=wallet.address,
-        amount=xrpl.models.IssuedCurrencyAmount(
+        amount=pyripple.models.IssuedCurrencyAmount(
             currency=currency_code,
             issuer=cold_wallet.address,
             value=issue_quantity
